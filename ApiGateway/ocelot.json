@@ -1,0 +1,88 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/user",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/userapi",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/user/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/userapi/{userId}",
+      "UpstreamHttpMethod": [ "DELETE", "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/role",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/roleapi",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/role/{roleId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/roleapi/{roleId}",
+      "UpstreamHttpMethod": [ "DELETE", "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/auth",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/identityapi/login",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/project",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "project-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/projectapi",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/project/{projectId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "project-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/projectapi/{projectId}",
+      "UpstreamHttpMethod": [ "DELETE", "GET" ]
+    }
+  ]
+}
