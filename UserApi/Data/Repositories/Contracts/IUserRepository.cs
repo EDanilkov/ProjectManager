@@ -16,8 +16,14 @@ namespace UserApi.Data.Repositories.Contracts
 
         Task<User> GetAsync(int userId);
 
+        Task<User> GetAsync(string username);
+
         IEnumerable<User> Get(string userName);
 
         Task<User> UpdateAsync(User user);
+
+        Task AddPhoto(string base64ImageRepresentation, int userId);
+
+        Task DeletePhoto(int userId);
     }
 }

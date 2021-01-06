@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ProjectApi.Models
+namespace ApiGateway.Models
 {
-    public class Project
+    public class Role
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        public int AdminId { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace UserApi.Data.Repositories.Contracts
 
         Task<Role> GetAsync(int roleId);
 
+        //Task<Role> GetRoleInProjectAsync(int userId, int projectId);
         //Task<Role> GetRoleByUserIdAsync(int userId);
 
         Task DeleteAsync(int roleId);

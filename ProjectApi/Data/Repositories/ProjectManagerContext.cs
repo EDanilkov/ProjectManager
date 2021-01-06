@@ -7,6 +7,10 @@ namespace ProjectApi.Data.Repositories
     {
         public DbSet<Project> Project { get; set; }
 
+        public DbSet<Role> Role { get; set; }
+
+        public DbSet<UserProject> UserProject { get; set; }
+
         public ProjectManagerContext(DbContextOptions<ProjectManagerContext> options)
             : base(options)
         {

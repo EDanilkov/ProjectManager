@@ -37,6 +37,13 @@ namespace UserApi.Controllers
         public async Task DeleteAsync(int roleId)
             => await roleRepository.DeleteAsync(roleId);
 
+        /*[HttpGet("{userId}/{projectId}")]
+        public async Task<Role> GetRoleInProjectAsync(int userId, int projectId)
+            => await roleRepository.GetRoleInProjectAsync(userId, projectId);*/
+
+
+
+
         /*[HttpGet("user/{userId}")]
         public async Task<Role> GetRoleByUserIdAsync(int userId)
             => await roleRepository.GetRoleByUserIdAsync(userId);*/

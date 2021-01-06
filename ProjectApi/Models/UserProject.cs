@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 
 namespace ProjectApi.Models
 {
-    public class Project
+    public class UserProject
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public int ProjectId { get; set; }
 
-        public int AdminId { get; set; }
+        public int UserId { get; set; }
+
+        public int RoleId { get; set; }
     }
 }

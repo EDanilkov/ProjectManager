@@ -18,6 +18,10 @@ namespace ProjectApi.Data.Repositories.Contracts
 
         IEnumerable<Project> Get(string projectName);
 
+        Task<IEnumerable<Project>> GetProjectsByUserIdAsync(int userId);
+
+        IEnumerable<int> GetUsersIdFromProject(int projectId);
+
         Task<Project> UpdateAsync(Project project);
     }
 }

@@ -29,6 +29,12 @@ namespace UserApi.Data.Repositories
         public async Task<Role> GetAsync(int roleId)
             => await db.Role.FirstAsync(c => c.Id == roleId);
 
+        /*public async Task<Role> GetRoleInProjectAsync(int userId, int projectId)
+        {
+            int roleId = (await db.UserProject.FirstAsync(u => u.ProjectId == projectId && u.UserId == userId)).RoleId;
+            return await db.Role.FirstAsync(c => c.Id == roleId);
+        }*/
+
         /*public async Task<Role> GetRoleByUserIdAsync(int userId)
         {
             User user = await db.User.FirstAsync(user => user.Id == userId);

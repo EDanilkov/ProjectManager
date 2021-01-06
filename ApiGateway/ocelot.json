@@ -25,6 +25,32 @@
       "UpstreamHttpMethod": [ "DELETE", "GET" ]
     },
     {
+      "DownstreamPathTemplate": "/user/name/{username}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/userapi/name/{username}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/user/{userId}/photo",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "user-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/userapi/{userId}/photo",
+      "UpstreamHttpMethod": [ "PUT", "POST", "DELETE" ]
+    },
+
+
+    {
       "DownstreamPathTemplate": "/role",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -48,8 +74,11 @@
       "UpstreamPathTemplate": "/roleapi/{roleId}",
       "UpstreamHttpMethod": [ "DELETE", "GET" ]
     },
+    
+
+
     {
-      "DownstreamPathTemplate": "/api/auth",
+      "DownstreamPathTemplate": "/login/signin",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -61,7 +90,33 @@
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/project",
+      "DownstreamPathTemplate": "/login/signup",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/identityapi/signup",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/token/refresh",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/identityapi/tokenrefresh",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+
+
+    {
+      "DownstreamPathTemplate": "/project",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -70,10 +125,10 @@
         }
       ],
       "UpstreamPathTemplate": "/projectapi",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+      "UpstreamHttpMethod": [ "PUT", "GET" ]
     },
     {
-      "DownstreamPathTemplate": "/api/project/{projectId}",
+      "DownstreamPathTemplate": "/project/{projectId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -83,6 +138,44 @@
       ],
       "UpstreamPathTemplate": "/projectapi/{projectId}",
       "UpstreamHttpMethod": [ "DELETE", "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/project/user/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "project-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/user/{userId}/projects",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+
+
+    {
+      "DownstreamPathTemplate": "/userProject",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "project-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/userprojectapi",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/userProject/{projectId}/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "project-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/userprojectapi/{projectId}/{userId}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ]
     }
   ]
 }

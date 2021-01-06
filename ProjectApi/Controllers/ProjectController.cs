@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProjectApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
@@ -26,9 +26,17 @@ namespace ProjectApi.Controllers
         public async Task<Project> GetAsync(int projectId)
             => await projectRepository.GetAsync(projectId);
 
+        [HttpGet("{projectId}/users")]
+        public IEnumerable<int> GetUsersIdFromProject(int projectId)
+            => projectRepository.GetUsersIdFromProject(projectId);
+
         [HttpGet("search/{projectName}")]
         public IEnumerable<Project> GetByProjectName(string projectName)
             => projectRepository.Get(projectName);
+
+        [HttpGet("user/{userId}")]
+        public async Task<IEnumerable<Project>> GetProjectsByUserIdAsync(int userId)
+            => await projectRepository.GetProjectsByUserIdAsync(userId);
 
         [HttpGet()]
         public IEnumerable<Project> Get()
@@ -41,5 +49,6 @@ namespace ProjectApi.Controllers
         [HttpPut]
         public async Task<Project> UpdateAsync([FromBody] Project project)
             => await projectRepository.UpdateAsync(project);
+
     }
 }

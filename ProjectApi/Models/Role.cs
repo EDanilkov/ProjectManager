@@ -5,12 +5,10 @@ using System.Threading.Tasks;
 
 namespace ProjectApi.Models
 {
-    public class Project
+    public class Role
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
-
-        public int AdminId { get; set; }
     }
 }
