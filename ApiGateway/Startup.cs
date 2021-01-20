@@ -25,7 +25,8 @@ namespace ApiGateway
                 });
             });
 
-            services.AddAuthentication(opt => {
+            services.AddAuthentication(opt =>
+            {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
@@ -66,4 +67,4 @@ namespace ApiGateway
             await app.UseOcelot();
         }
     }
-} 
+}

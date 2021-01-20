@@ -1,57 +1,57 @@
 version: '3.4'
 
 services:
-    apigateway:
-        container_name: apigateway-container
-        image: ${DOCKER_REGISTRY-}apigateway
-        build:
-          context: .
-          dockerfile: ApiGateway/Dockerfile
-        ports:
-          - "8085:80"
-        restart: always
+  apigateway:
+    container_name: apigateway-container
+    image: ${DOCKER_REGISTRY-}apigateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - "8085:80"
+    restart: always
         
-    user:
-        container_name: user-container
-        image: ${DOCKER_REGISTRY-}user
-        build:
-          context: .
-          dockerfile: UserApi/Dockerfile
-        ports:
-          - "8084:80"
-        depends_on:
-          - db
-        restart: always
-        
-    project:
-        container_name: project-container
-        image: ${DOCKER_REGISTRY-}project
-        build:
-          context: .
-          dockerfile: ProjectApi/Dockerfile
-        ports:
-          - "8083:80"
-        depends_on:
-          - db
-        restart: always
-       
-    identity:
-        container_name: identity-container
-        image: ${DOCKER_REGISTRY-}identity
-        build:
-          context: .
-          dockerfile: IdentityApi/Dockerfile
-        ports:
-          - "8082:80"
-        depends_on:
-          - db 
-        restart: always
+  user:
+    container_name: user-container
+    image: ${DOCKER_REGISTRY-}user
+    build:
+      context: .
+      dockerfile: UserApi/Dockerfile
+    ports:
+      - "8084:80"
+    depends_on:
+      - db
+    restart: always
+    
+  project:
+    container_name: project-container
+    image: ${DOCKER_REGISTRY-}project
+    build:
+      context: .
+      dockerfile: ProjectApi/Dockerfile
+    ports:
+      - "8083:80"
+    depends_on:
+      - db
+    restart: always
+     
+  identity:
+    container_name: identity-container
+    image: ${DOCKER_REGISTRY-}identity
+    build:
+      context: .
+      dockerfile: IdentityApi/Dockerfile
+    ports:
+      - "8082:80"
+    depends_on:
+      - db 
+    restart: always
 
-    db:
-        container_name: db-container
-        image: mcr.microsoft.com/mssql/server:2019-latest
-        ports:
-          - "1433:1433"
-        environment:
-            SA_PASSWORD: "Super_password"
-            ACCEPT_EULA: "Y"
+  db:
+    container_name: db-container
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Super_password"
+      ACCEPT_EULA: "Y"

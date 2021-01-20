@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using UserApi.Data.Repositories;
 using UserApi.Data.Repositories.Contracts;
+using UserApi.Data.Services.Contracts;
 using UserApi.Models;
 
 namespace UserApi.Controllers
@@ -15,63 +14,62 @@ namespace UserApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        IUserRepository userRepository;
+        IUserService _userService;
+        IImageManagerService _imageManagerService;
 
-        public UserController(ProjectManagerContext db)
+        public UserController(IUserService userService, IImageManagerService imageManagerService)
         {
-            userRepository = new UserRepository(db);
+            _userService = userService;
+            _imageManagerService = imageManagerService;
         }
 
         [HttpPost()]
         public async Task<User> CreateAsync([FromBody] User user)
-            => await userRepository.CreateAsync(user);
+            => await _userService.CreateAsync(user);
 
         [HttpGet("{userId}")]
-        public async Task<User> GetAsync(int userId)
-            => await userRepository.GetAsync(userId);
+        public async Task<User> GetAsync(Guid userId)
+            => await _userService.FirstOrDefaultAsync(u => string.Equals(u.Id, userId));
 
         [HttpGet("name/{username}")]
-        public async Task<User> GetUserByUsername(string username)
-            => await userRepository.GetAsync(username);
+        public async Task<User> GetUserByUsernameAsync(string username)
+            => await _userService.FirstOrDefaultAsync(u => string.Equals(u.Username, username));
 
         [HttpGet("search/{userName}")]
-        public IEnumerable<User> GetUsersByUsername(string userName)
-            => userRepository.Get(userName);
+        public async Task<IEnumerable<User>> GetUsersByUsernameAsync(string userName)
+            => await _userService.GetUsersByUsernameAsync(userName);
 
         [HttpGet()]
-        public IEnumerable<User> Get()
-            => userRepository.Get();
+        public async Task<IEnumerable<User>> GetAsync()
+            => await _userService.GetAsync();
 
         [HttpDelete("{userId}")]
-        public async Task DeleteAsync(int userId)
-            => await userRepository.DeleteAsync(userId);
+        public async Task DeleteAsync(Guid userId)
+            => await _userService.DeleteAsync(userId);
 
         [HttpPut]
         public async Task<User> UpdateAsync([FromBody] User user)
-            => await userRepository.UpdateAsync(user);
+            => await _userService.UpdateAsync(user);
 
         [Route("{userId}/photo")]
         [HttpPost, DisableRequestSizeLimit]
-        public async Task<string> UploadPhoto(int userId)
+        public async Task<string> UploadPhotoAsync(Guid userId)
         {
             string base64ImageRepresentation = "";
             var uploadedFile = Request.Form.Files[0];
             if (uploadedFile != null)
             {
-                using var fileStream = uploadedFile.OpenReadStream();
-                byte[] bytes = new byte[uploadedFile.Length];
-                fileStream.Read(bytes, 0, (int)uploadedFile.Length);
-                base64ImageRepresentation = "data:" + uploadedFile.ContentType + ";base64," + Convert.ToBase64String(bytes);
-                await userRepository.AddPhoto(base64ImageRepresentation, userId);
+                base64ImageRepresentation = _imageManagerService.ConvertFileToBase64(uploadedFile);
+                await _imageManagerService.AddPhotoAsync(base64ImageRepresentation, userId);
             }
             return JsonSerializer.Serialize(base64ImageRepresentation);
         }
 
         [Route("{userId}/photo")]
         [HttpDelete]
-        public async Task DeletePhoto(int userId)
+        public async Task DeletePhotoAsync(Guid userId)
         {
-            await userRepository.DeletePhoto(userId);
+            await _userService.DeletePhotoAsync(userId);
         }
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using ApiGateway.Models;
-using Microsoft.AspNetCore.Http;
+﻿using ApiGateway.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ApiGateway.Controllers
 {
@@ -15,9 +12,9 @@ namespace ApiGateway.Controllers
     public class RoleController : ControllerBase
     {
         [HttpGet("{userId}/{projectId}")]
-        public async Task<Role> GetRoleInProjectAsync(int projectId, int userId)
+        public async Task<Role> GetRoleInProjectAsync(Guid projectId, Guid userId)
         {
-            var url = "http://project-container:80/userproject/" + projectId + "/" + userId;
+            var url = "http://project-container:80/project/" + projectId + "/user/" + userId;
             using var client = new HttpClient();
 
             var response = await client.GetAsync(url);

@@ -1,26 +1,25 @@
 ﻿using ProjectApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectApi.Data.Repositories.Contracts
 {
-    interface IProjectRepository
+    public interface IProjectRepository
     {
         Task<Project> CreateAsync(Project project);
 
-        Task DeleteAsync(int projectId);
+        Task DeleteAsync(Guid projectId);
 
-        IEnumerable<Project> Get();
+        Task<IEnumerable<Project>> GetAsync();
 
-        Task<Project> GetAsync(int projectId);
+        Task<Project> GetAsync(Guid projectId);
 
-        IEnumerable<Project> Get(string projectName);
+        Task<IEnumerable<Project>> GetAsync(string projectName);
 
-        Task<IEnumerable<Project>> GetProjectsByUserIdAsync(int userId);
+        Task<IEnumerable<Project>> GetProjectsByUserIdAsync(Guid userId);
 
-        IEnumerable<int> GetUsersIdFromProject(int projectId);
+        Task<IEnumerable<Guid>> GetUserIdsFromProject(Guid projectId);
 
         Task<Project> UpdateAsync(Project project);
     }

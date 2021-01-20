@@ -11,3 +11,21 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  db:
+    environment:
+      - db__connectionString=Server=db-container; Initial Catalog=ProjectManager;User ID=SA;Password=Super_password;
+    ports:
+      - "1433"
+    
+  user:
+    environment:
+      - db__connectionString=Server=db-container; Initial Catalog=ProjectManager;User ID=SA;Password=Super_password;
+      
+  project:
+    environment:
+      - db__connectionString=Server=db-container; Initial Catalog=ProjectManager;User ID=SA;Password=Super_password;
+   
+  identity:
+    environment:
+      - db__connectionString=Server=db-container; Initial Catalog=ProjectManager;User ID=SA;Password=Super_password;

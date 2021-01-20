@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProjectApi.Models
 {
     public class Project
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
-        public int AdminId { get; set; }
+        public Guid AdminId { get; set; }
     }
 }

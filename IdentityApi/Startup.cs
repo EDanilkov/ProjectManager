@@ -1,29 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DbUp;
 using IdentityApi.Data.Repositories;
+using IdentityApi.Data.Repositories.Contracts;
 using IdentityApi.Data.Services;
 using IdentityApi.Data.Services.Contracts;
 using IdentityApi.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Reflection;
+using System.Text;
 
 namespace IdentityApi
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,7 +31,8 @@ namespace IdentityApi
         {
             var jwtTokenConfig = Configuration.GetSection("jwtTokenConfig").Get<JwtTokenConfig>();
 
-            services.AddAuthentication(opt => {
+            services.AddAuthentication(opt =>
+            {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
@@ -54,15 +51,11 @@ namespace IdentityApi
                 };
             });
 
-            var server = Configuration["DBServer"] ?? "db-container";
-            var port = Configuration["DBPort"] ?? "1433";
-            var database = Configuration["Database"] ?? "ProjectManager";
-            var user = Configuration["DBUser"] ?? "SA";
-            var password = Configuration["DBPassword"] ?? "Super_password";
-
             services.AddDbContext<ProjectManagerContext>(options =>
-                options.UseSqlServer($"Server={server},{port}; Initial Catalog={database};User ID = {user};Password={password};"));
+                options.UseSqlServer(Configuration.GetValue<string>("db:connectionString")));
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddControllers();
         }
@@ -86,6 +79,17 @@ namespace IdentityApi
             {
                 endpoints.MapControllers();
             });
+
+            var connectionString = "Server=db-container; User ID=SA;Password=Super_password;";
+
+            var upgrader =
+                DeployChanges.To
+                    .SqlDatabase(connectionString)
+                    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                    .LogToConsole()
+                    .Build();
+
+            var result = upgrader.PerformUpgrade();
         }
     }
 }

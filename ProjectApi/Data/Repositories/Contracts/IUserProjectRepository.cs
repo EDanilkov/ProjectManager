@@ -1,21 +1,19 @@
 ﻿using ProjectApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjectApi.Data.Repositories.Contracts
 {
-    interface IUserProjectRepository
+    public interface IUserProjectRepository
     {
         Task<UserProject> CreateAsync(UserProject userProject);
 
-        Task<UserProject> GetAsync(int projectId, int userId);
+        Task<UserProject> GetAsync(Guid projectId, Guid userId);
 
         Task<UserProject> UpdateAsync(UserProject userProject);
 
-        Task DeleteAsync(int projectId, int userId);
+        Task DeleteAsync(Guid projectId, Guid userId);
 
-        Task DeleteAsync(int userProjectId);
+        Task DeleteAsync(Guid userProjectId);
     }
 }

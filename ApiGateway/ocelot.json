@@ -74,11 +74,11 @@
       "UpstreamPathTemplate": "/roleapi/{roleId}",
       "UpstreamHttpMethod": [ "DELETE", "GET" ]
     },
-    
+
 
 
     {
-      "DownstreamPathTemplate": "/login/signin",
+      "DownstreamPathTemplate": "/auth/signin",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -90,7 +90,7 @@
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/login/signup",
+      "DownstreamPathTemplate": "/auth/signup",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -114,7 +114,7 @@
       "UpstreamHttpMethod": [ "POST" ]
     },
 
-
+    // TODO Add put method
     {
       "DownstreamPathTemplate": "/project",
       "DownstreamScheme": "http",
@@ -125,8 +125,9 @@
         }
       ],
       "UpstreamPathTemplate": "/projectapi",
-      "UpstreamHttpMethod": [ "PUT", "GET" ]
-    },
+      "UpstreamHttpMethod": [ "GET" ]
+    },  
+
     {
       "DownstreamPathTemplate": "/project/{projectId}",
       "DownstreamScheme": "http",
@@ -139,6 +140,33 @@
       "UpstreamPathTemplate": "/projectapi/{projectId}",
       "UpstreamHttpMethod": [ "DELETE", "GET" ]
     },
+
+    {
+      "DownstreamPathTemplate": "/project/{projectId}/user",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "project-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/projectapi/{projectId}/user",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/project/{projectId}/user/{userId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "project-container",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/projectapi/{projectId}/user/{userId}",
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
+    },
+
+    // TODO Delete and add browsing to project Controller
     {
       "DownstreamPathTemplate": "/project/user/{userId}",
       "DownstreamScheme": "http",
@@ -151,31 +179,5 @@
       "UpstreamPathTemplate": "/user/{userId}/projects",
       "UpstreamHttpMethod": [ "GET" ]
     },
-
-
-    {
-      "DownstreamPathTemplate": "/userProject",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "project-container",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/userprojectapi",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "DELETE" ]
-    },
-    {
-      "DownstreamPathTemplate": "/userProject/{projectId}/{userId}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "project-container",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/userprojectapi/{projectId}/{userId}",
-      "UpstreamHttpMethod": [ "GET", "DELETE" ]
-    }
   ]
 }

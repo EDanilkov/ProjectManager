@@ -1,29 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using UserApi.Models;
 
 namespace UserApi.Data.Repositories.Contracts
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
         Task<User> CreateAsync(User user);
 
-        Task DeleteAsync(int userId);
-
-        IEnumerable<User> Get();
-
-        Task<User> GetAsync(int userId);
-
-        Task<User> GetAsync(string username);
-
-        IEnumerable<User> Get(string userName);
-
         Task<User> UpdateAsync(User user);
 
-        Task AddPhoto(string base64ImageRepresentation, int userId);
+        Task<IEnumerable<User>> GetAsync();
 
-        Task DeletePhoto(int userId);
+        Task<IEnumerable<User>> GetAsync(string userName);
+
+        Task<User> FirstOrDefaultAsync(Expression<Func<User, bool>> predicate = null);
+
+        Task DeleteAsync(Guid userId);
+
+        Task AddPhotoAsync(string base64ImageRepresentation, Guid userId);
+
+        Task DeletePhotoAsync(Guid userId);
     }
 }

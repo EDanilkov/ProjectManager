@@ -1,6 +1,7 @@
 ﻿using ApiGateway.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -13,45 +14,58 @@ namespace ApiGateway.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        [HttpPost()]
+        [HttpPost]
         public async Task<Project> CreateAsync([FromBody] Project project)
         {
             var jsonProject = JsonConvert.SerializeObject(project);
+
             var data = new StringContent(jsonProject, Encoding.UTF8, "application/json");
 
-            var url = "http://project-container:80/project";
             using var client = new HttpClient();
 
-            var response = await client.PostAsync(url, data);
+            var url = "http://user-container:80/role";
+            var response = await client.GetAsync(url);
             var readAsStringAsync = response.Content.ReadAsStringAsync();
-            project = JsonConvert.DeserializeObject<Project>(readAsStringAsync.Result);
-
-            url = "http://user-container:80/role";
-            response = await client.GetAsync(url);
-            readAsStringAsync = response.Content.ReadAsStringAsync();
             List<Role> roles = JsonConvert.DeserializeObject<List<Role>>(readAsStringAsync.Result);
 
-            var jsonUserProject = JsonConvert.SerializeObject(new UserProject() {ProjectId = project.Id, RoleId = roles.First(r => r.Name == "admin").Id, UserId = project.AdminId});
-            data = new StringContent(jsonUserProject, Encoding.UTF8, "application/json");
-
-            url = "http://project-container:80/userproject";
+            url = "http://project-container:80/project?roleId=" + roles.First(r => r.Name == "admin").Id;
 
             response = await client.PostAsync(url, data);
+            readAsStringAsync = response.Content.ReadAsStringAsync();
+            project = JsonConvert.DeserializeObject<Project>(readAsStringAsync.Result);
+
+            return project;
+        }
+        
+        [HttpPut]
+        public async Task<Project> UpdateAsync([FromBody] Project project)
+        {
+            var jsonProject = JsonConvert.SerializeObject(project);
+
+            var data = new StringContent(jsonProject, Encoding.UTF8, "application/json");
+
+            using var client = new HttpClient();
+
+            var url = "http://project-container:80/project";
+            var response = await client.PutAsync(url, data);
+            var readAsStringAsync = response.Content.ReadAsStringAsync();
+            project = JsonConvert.DeserializeObject<Project>(readAsStringAsync.Result);
+           
             return project;
         }
 
-        [HttpGet("{projectId}/user")]
-        public async Task<List<User>> GetUsersFromProjectAsync(int projectId)
+        [HttpGet("{projectId}/users")]
+        public async Task<List<User>> GetUsersFromProjectAsync(Guid projectId)
         {
             var url = "http://project-container:80/project/" + projectId + "/users";
             using var client = new HttpClient();
 
             var response = await client.GetAsync(url);
             var readAsStringAsync = response.Content.ReadAsStringAsync();
-            List<int> usersId = JsonConvert.DeserializeObject<List<int>>(readAsStringAsync.Result);
+            List<Guid> usersId = JsonConvert.DeserializeObject<List<Guid>>(readAsStringAsync.Result);
 
             List<User> users = new List<User>();
-            foreach (int userId in usersId)
+            foreach (Guid userId in usersId)
             {
                 url = "http://user-container:80/user/" + userId;
                 response = await client.GetAsync(url);

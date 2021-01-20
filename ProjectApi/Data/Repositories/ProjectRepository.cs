@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectApi.Data.Repositories.Contracts;
 using ProjectApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,42 +31,44 @@ namespace ProjectApi.Data.Repositories
             return project;
         }
 
-        public IEnumerable<Project> Get()
-            => db.Project;
+        public async Task<IEnumerable<Project>> GetAsync()
+            => await db.Project.ToListAsync();
 
-        public IEnumerable<Project> Get(string projectName)
-            => db.Project.Where(c => c.Name.Contains(projectName));
+        // TODO Change in Search Route and name
+        public async Task<IEnumerable<Project>> GetAsync(string projectName)
+            => await db.Project.Where(c => c.Name.Contains(projectName)).ToListAsync();
 
-        public async Task<Project> GetAsync(int projectId)
+        public async Task<Project> GetAsync(Guid projectId)
             => await db.Project.Where(c => c.Id == projectId).FirstAsync();
 
-        public async Task<IEnumerable<Project>> GetProjectsByUserIdAsync(int userId)
+        public async Task<IEnumerable<Project>> GetProjectsByUserIdAsync(Guid userId)
         {
             var projects = new List<Project>();
             var userProjects = db.UserProject.Where(u => u.UserId == userId).ToList();
             foreach (UserProject userProject in userProjects)
             {
                 var project = await db.Project.FirstOrDefaultAsync(p => p.Id == userProject.ProjectId);
-                if(project != null)
+
+                if (project != null)
                 {
-                    projects.Add(new Project() { Id = project.Id, Name = project.Name, AdminId = project.AdminId});
+                    projects.Add(new Project() 
+                    { 
+                        Id = project.Id, 
+                        Name = project.Name, 
+                        AdminId = project.AdminId 
+                    });
                 }
             }
             return projects;
         }
 
-        public IEnumerable<int> GetUsersIdFromProject(int projectId)
+        public async Task<IEnumerable<Guid>> GetUserIdsFromProject(Guid projectId)
         {
-            var usersId = new List<int>();
-            var userProjects = db.UserProject.Where(u => u.ProjectId == projectId).ToList();
-            foreach (UserProject userProject in userProjects)
-            {
-                usersId.Add(userProject.UserId);
-            }
-            return usersId;
+            var userProjects = await db.UserProject.Where(u => u.ProjectId == projectId).ToListAsync();
+            return userProjects.Select(u => u.UserId).ToList();
         }
 
-        public async Task DeleteAsync(int projectId)
+        public async Task DeleteAsync(Guid projectId)
         {
             Project project = await GetAsync(projectId);
             var userProjects = db.UserProject.Where(u => u.ProjectId == projectId).ToList();

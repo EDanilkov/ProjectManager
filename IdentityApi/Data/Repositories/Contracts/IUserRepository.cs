@@ -1,14 +1,16 @@
-﻿using IdentityApi.Models;
+﻿using IdentityApi.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace IdentityApi.Data.Repositories.Contracts
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
-        IEnumerable<User> Get();
+        Task<IEnumerable<User>> GetAsync();
+
+        Task<User> FirstOrDefault(Expression<Func<User, bool>> predicate = null);
 
         Task<User> CreateAsync(User user);
 

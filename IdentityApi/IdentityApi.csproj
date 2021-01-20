@@ -8,9 +8,16 @@
 
   <ItemGroup>
     <None Remove="Data\Repositories\og03owaj.uyb~" />
+    <None Remove="Scripts\Script0001 - Create tables.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\Script0001 - Create tables.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dbup-core" Version="4.5.0" />
+    <PackageReference Include="dbup-sqlserver" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />

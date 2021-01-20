@@ -1,4 +1,5 @@
-﻿using IdentityApi.Models;
+﻿using IdentityApi.Data.Models;
+using IdentityApi.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Data.Repositories

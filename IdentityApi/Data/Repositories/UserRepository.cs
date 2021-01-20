@@ -1,9 +1,9 @@
-﻿using IdentityApi.Data.Repositories.Contracts;
-using IdentityApi.Models;
+﻿using IdentityApi.Data.Models;
+using IdentityApi.Data.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace IdentityApi.Data.Repositories
@@ -18,8 +18,11 @@ namespace IdentityApi.Data.Repositories
             db = _db;
         }
 
-        public IEnumerable<User> Get()
-            => db.User;
+        public async Task<IEnumerable<User>> GetAsync()
+            => await db.User.ToListAsync();
+
+        public async Task<User> FirstOrDefault(Expression<Func<User, bool>> predicate = null)
+            => await db.User.FirstOrDefaultAsync(predicate);
 
         public async Task<User> CreateAsync(User user)
         {

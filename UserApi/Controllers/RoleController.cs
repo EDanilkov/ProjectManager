@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using UserApi.Data.Repositories;
 using UserApi.Data.Repositories.Contracts;
+using UserApi.Data.Services.Contracts;
 using UserApi.Models;
 
 namespace UserApi.Controllers
@@ -14,38 +13,27 @@ namespace UserApi.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
-        IRoleRepository roleRepository;
+        IRoleService _roleService;
 
-        public RoleController(ProjectManagerContext db)
+        public RoleController(IRoleService roleService)
         {
-            roleRepository = new RoleRepository(db);
+            _roleService = roleService;
         }
 
         [HttpPost]
         public async Task<Role> CreateAsync([FromBody] Role role)
-            => await roleRepository.CreateAsync(role);
+            => await _roleService.CreateAsync(role);
 
         [HttpGet("{roleId}")]
-        public async Task<Role> GetAsync(int roleId)
-            => await roleRepository.GetAsync(roleId);
+        public async Task<Role> GetAsync(Guid roleId)
+            => await _roleService.GetAsync(roleId);
 
         [HttpGet()]
-        public IEnumerable<Role> Get()
-            => roleRepository.Get();
+        public async Task<IEnumerable<Role>> GetAsync()
+            => await _roleService.GetAsync();
 
         [HttpDelete("{roleId}")]
-        public async Task DeleteAsync(int roleId)
-            => await roleRepository.DeleteAsync(roleId);
-
-        /*[HttpGet("{userId}/{projectId}")]
-        public async Task<Role> GetRoleInProjectAsync(int userId, int projectId)
-            => await roleRepository.GetRoleInProjectAsync(userId, projectId);*/
-
-
-
-
-        /*[HttpGet("user/{userId}")]
-        public async Task<Role> GetRoleByUserIdAsync(int userId)
-            => await roleRepository.GetRoleByUserIdAsync(userId);*/
+        public async Task DeleteAsync(Guid roleId)
+            => await _roleService.DeleteAsync(roleId);
     }
 }
